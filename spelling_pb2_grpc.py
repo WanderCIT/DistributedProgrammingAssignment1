@@ -14,9 +14,14 @@ class SpellingBeeStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetServerResponse = channel.unary_unary(
-                '/unary.SpellingBee/GetServerResponse',
-                request_serializer=spelling__pb2.SpellingBeeWord.SerializeToString,
+        self.GetLetters = channel.unary_unary(
+                '/unary.SpellingBee/GetLetters',
+                request_serializer=spelling__pb2.LetterRequest.SerializeToString,
+                response_deserializer=spelling__pb2.SpellingLetters.FromString,
+                )
+        self.CheckWord = channel.unary_unary(
+                '/unary.SpellingBee/CheckWord',
+                request_serializer=spelling__pb2.SpellingBeeWordRequest.SerializeToString,
                 response_deserializer=spelling__pb2.SpellingBeeWordResponse.FromString,
                 )
 
@@ -24,7 +29,7 @@ class SpellingBeeStub(object):
 class SpellingBeeServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GetServerResponse(self, request, context):
+    def GetLetters(self, request, context):
         """A simple RPC.
 
         Obtains the SpellingBeeWordResponse at a given position.
@@ -33,12 +38,23 @@ class SpellingBeeServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def CheckWord(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SpellingBeeServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetServerResponse': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetServerResponse,
-                    request_deserializer=spelling__pb2.SpellingBeeWord.FromString,
+            'GetLetters': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetLetters,
+                    request_deserializer=spelling__pb2.LetterRequest.FromString,
+                    response_serializer=spelling__pb2.SpellingLetters.SerializeToString,
+            ),
+            'CheckWord': grpc.unary_unary_rpc_method_handler(
+                    servicer.CheckWord,
+                    request_deserializer=spelling__pb2.SpellingBeeWordRequest.FromString,
                     response_serializer=spelling__pb2.SpellingBeeWordResponse.SerializeToString,
             ),
     }
@@ -52,7 +68,7 @@ class SpellingBee(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetServerResponse(request,
+    def GetLetters(request,
             target,
             options=(),
             channel_credentials=None,
@@ -62,8 +78,25 @@ class SpellingBee(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/unary.SpellingBee/GetServerResponse',
-            spelling__pb2.SpellingBeeWord.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/unary.SpellingBee/GetLetters',
+            spelling__pb2.LetterRequest.SerializeToString,
+            spelling__pb2.SpellingLetters.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CheckWord(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/unary.SpellingBee/CheckWord',
+            spelling__pb2.SpellingBeeWordRequest.SerializeToString,
             spelling__pb2.SpellingBeeWordResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

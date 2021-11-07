@@ -6,15 +6,33 @@ service SpellingBee{
   // A simple RPC.
   //
   // Obtains the SpellingBeeWordResponse at a given position.
- rpc GetServerResponse(SpellingBeeWord) returns (SpellingBeeWordResponse) {}
+  rpc GetLetters(LetterRequest) returns (SpellingLetters) {}
+  rpc CheckWord(SpellingBeeWordRequest) returns (SpellingBeeWordResponse) {}
 
 }
 
-message SpellingBeeWord{
- string word = 1;
+message SpellingBeeWordRequest{
+    string word = 1;
+    repeated string letters = 2;
+    
 }
 
 message SpellingBeeWordResponse{
- string word = 1;
- string response = 2;
+    string word = 1;
+    string valid = 2;
+    string reason = 3;
+}
+
+message LetterRequest{
+    
+}
+
+message SpellingLetters{
+    string letter1 = 1;
+    string letter2 = 2;
+    string letter3 = 3;
+    string mainLetter = 4;
+    string letter4 = 5;
+    string letter5 = 6;
+    string letter6 = 7;
 }
