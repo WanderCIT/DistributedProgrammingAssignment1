@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package unary;
+
+service SpellingBee{
+  // A simple RPC.
+  //
+  // Obtains the SpellingBeeWordResponse at a given position.
+ rpc GetServerResponse(SpellingBeeWord) returns (SpellingBeeWordResponse) {}
+
+}
+
+message SpellingBeeWord{
+ string word = 1;
+}
+
+message SpellingBeeWordResponse{
+ string word = 1;
+ string response = 2;
+}
