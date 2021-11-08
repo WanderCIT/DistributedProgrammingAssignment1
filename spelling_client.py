@@ -35,11 +35,11 @@ class SpellingClient(object):
         else:
             SpellingClient.__instance = self
 
-    def check_word(self, word, letters):
+    def check_word(self, word, letters, score):
         """
         Client function to call the rpc for GetServerResponse
         """
-        request = pb2.SpellingBeeWordRequest(word=word, letters=letters)
+        request = pb2.SpellingBeeWordRequest(word=word, letters=letters, score=score)
         return self.stub.CheckWord(request)
 
     def get_letters(self):
@@ -56,6 +56,7 @@ class SpellingClient(object):
 
 
 if __name__ == '__main__':
+    score = 0
     options = ["Remind Letters", "Submit Word", "Exit!"]
     terminal_menu = TerminalMenu(options)
     client = SpellingClient()
@@ -75,7 +76,8 @@ if __name__ == '__main__':
             client.remind_letters(letters_response)
         elif (menu_entry_index == 1):
             word = input("Write word")
-            result = client.check_word(word=word, letters=letters)
+            result = client.check_word(word=word, letters=letters, score=score)
+            score = result.score
             print(f'RESULT IS => {result}')
         else:
             break

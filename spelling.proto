@@ -14,13 +14,14 @@ service SpellingBee{
 message SpellingBeeWordRequest{
     string word = 1;
     repeated string letters = 2;
-    
+    int32 score = 3;
 }
 
 message SpellingBeeWordResponse{
     string word = 1;
     string valid = 2;
     string reason = 3;
+    int32 score = 4;
 }
 
 message LetterRequest{

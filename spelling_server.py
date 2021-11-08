@@ -37,13 +37,24 @@ class SpellingBeeService(pb2_grpc.SpellingBeeServicer):
         else:
             return False
 
+    def is_panagram(self, word, letters):
+
+        for letter in letters:
+            print(f'Letter => ', letter.lower())
+            if (letter.lower() not in word):
+                return False
+        
+        return True
+
 
     def CheckWord(self, request, context):
 
         # get the string from the incoming request
         word = request.word.lower()
         letters = request.letters
+        score = request.score
         exists = False
+        points = 0
 
         with open('dictionary.txt') as file:
             contents = file.read()
@@ -61,14 +72,40 @@ class SpellingBeeService(pb2_grpc.SpellingBeeServicer):
                     pass
                 else:
                     print("DEBUG 2")
-                    result = {'word': word, 'valid': "Invalid word", 'reason': "Used invalid letters"}
+                    result = {
+                        'word': word,
+                        'valid': "Invalid word",
+                        'reason': "Used invalid letters",
+                        'score': score
+                    }
                     return pb2.SpellingBeeWordResponse(**result)
             print("DEBUG 3")
-            result = {'word': word, 'valid': "Valid word", 'reason': "Respects all rules"}
+            if (len(word) < 5):
+                points = 1
+            elif (self.is_panagram(word.lower(), letters)):
+                points = len(word) + 7
+            else:
+                points = len(word)
+
+            is_panagram = self.is_panagram(word.lower(), letters)
+
+            print(f'PANAGRAM ==> {is_panagram}')
+
+            result = {
+                'word': word,
+                'valid': "Valid word",
+                'reason': "Respects all rules",
+                'score':score+points
+            }
             return pb2.SpellingBeeWordResponse(**result)
         else:
-            print("DEBUG 4")
-            result = {'word': word, 'valid': "Invalid word", 'reason': "Word too short or didn't use centre letter"}
+            print(f"DEBUG 4 {score}")
+            result = {
+                'word': word,
+                'valid': "Invalid word",
+                'reason': "Word too short or didn't use centre letter",
+                'score': score
+            }
             return pb2.SpellingBeeWordResponse(**result)
 
 

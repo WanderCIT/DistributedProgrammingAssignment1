@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0espelling.proto\x12\x05unary\"7\n\x16SpellingBeeWordRequest\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x0f\n\x07letters\x18\x02 \x03(\t\"F\n\x17SpellingBeeWordResponse\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\r\n\x05valid\x18\x02 \x01(\t\x12\x0e\n\x06reason\x18\x03 \x01(\t\"\x0f\n\rLetterRequest\"\x8b\x01\n\x0fSpellingLetters\x12\x0f\n\x07letter1\x18\x01 \x01(\t\x12\x0f\n\x07letter2\x18\x02 \x01(\t\x12\x0f\n\x07letter3\x18\x03 \x01(\t\x12\x12\n\nmainLetter\x18\x04 \x01(\t\x12\x0f\n\x07letter4\x18\x05 \x01(\t\x12\x0f\n\x07letter5\x18\x06 \x01(\t\x12\x0f\n\x07letter6\x18\x07 \x01(\t2\x99\x01\n\x0bSpellingBee\x12<\n\nGetLetters\x12\x14.unary.LetterRequest\x1a\x16.unary.SpellingLetters\"\x00\x12L\n\tCheckWord\x12\x1d.unary.SpellingBeeWordRequest\x1a\x1e.unary.SpellingBeeWordResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0espelling.proto\x12\x05unary\"F\n\x16SpellingBeeWordRequest\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x0f\n\x07letters\x18\x02 \x03(\t\x12\r\n\x05score\x18\x03 \x01(\x05\"U\n\x17SpellingBeeWordResponse\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\r\n\x05valid\x18\x02 \x01(\t\x12\x0e\n\x06reason\x18\x03 \x01(\t\x12\r\n\x05score\x18\x04 \x01(\x05\"\x0f\n\rLetterRequest\"\x8b\x01\n\x0fSpellingLetters\x12\x0f\n\x07letter1\x18\x01 \x01(\t\x12\x0f\n\x07letter2\x18\x02 \x01(\t\x12\x0f\n\x07letter3\x18\x03 \x01(\t\x12\x12\n\nmainLetter\x18\x04 \x01(\t\x12\x0f\n\x07letter4\x18\x05 \x01(\t\x12\x0f\n\x07letter5\x18\x06 \x01(\t\x12\x0f\n\x07letter6\x18\x07 \x01(\t2\x99\x01\n\x0bSpellingBee\x12<\n\nGetLetters\x12\x14.unary.LetterRequest\x1a\x16.unary.SpellingLetters\"\x00\x12L\n\tCheckWord\x12\x1d.unary.SpellingBeeWordRequest\x1a\x1e.unary.SpellingBeeWordResponse\"\x00\x62\x06proto3'
 )
 
 
@@ -47,6 +47,13 @@ _SPELLINGBEEWORDREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='score', full_name='unary.SpellingBeeWordRequest.score', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -60,7 +67,7 @@ _SPELLINGBEEWORDREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=25,
-  serialized_end=80,
+  serialized_end=95,
 )
 
 
@@ -93,6 +100,13 @@ _SPELLINGBEEWORDRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='score', full_name='unary.SpellingBeeWordResponse.score', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -105,8 +119,8 @@ _SPELLINGBEEWORDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=82,
-  serialized_end=152,
+  serialized_start=97,
+  serialized_end=182,
 )
 
 
@@ -130,8 +144,8 @@ _LETTERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=154,
-  serialized_end=169,
+  serialized_start=184,
+  serialized_end=199,
 )
 
 
@@ -204,8 +218,8 @@ _SPELLINGLETTERS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=172,
-  serialized_end=311,
+  serialized_start=202,
+  serialized_end=341,
 )
 
 DESCRIPTOR.message_types_by_name['SpellingBeeWordRequest'] = _SPELLINGBEEWORDREQUEST
@@ -251,8 +265,8 @@ _SPELLINGBEE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=314,
-  serialized_end=467,
+  serialized_start=344,
+  serialized_end=497,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetLetters',
