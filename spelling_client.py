@@ -9,6 +9,14 @@ class SpellingClient(object):
     Client for gRPC functionality
     """
 
+    __instance = None
+
+    def getInstance():
+        """ Static access method. """
+        if SpellingClient.__instance == None:
+            SpellingClient()
+        return SpellingClient.__instance
+
     def __init__(self):
         self.host = 'localhost'
         self.server_port = 50051
@@ -19,6 +27,13 @@ class SpellingClient(object):
 
         # bind the client and the server
         self.stub = pb2_grpc.SpellingBeeStub(self.channel)
+
+        """ SINGLETON IMPLEMENTATION"""
+        """ Virtually private constructor. """
+        if SpellingClient.__instance != None:
+            raise Exception("This class is a singleton!")
+        else:
+            SpellingClient.__instance = self
 
     def check_word(self, word, letters):
         """
@@ -44,6 +59,9 @@ if __name__ == '__main__':
     options = ["Remind Letters", "Submit Word", "Exit!"]
     terminal_menu = TerminalMenu(options)
     client = SpellingClient()
+    print(f'Checking singleton implementation: SpellingClient class initialization => ', client)
+    client1 = SpellingClient.getInstance()
+    print(f'Checking singleton implementation: reference to previously created SpellingClient class => ', client1)
     letters_response = client.get_letters()
 
     print(f'Letters = {letters_response}')
