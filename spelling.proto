@@ -29,11 +29,5 @@ message LetterRequest{
 }
 
 message SpellingLetters{
-    string letter1 = 1;
-    string letter2 = 2;
-    string letter3 = 3;
-    string mainLetter = 4;
-    string letter4 = 5;
-    string letter5 = 6;
-    string letter6 = 7;
+    repeated string letters = 1;
 }

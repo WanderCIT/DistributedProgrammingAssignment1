@@ -11,6 +11,7 @@ class SpellingClient(object):
 
     __instance = None
 
+    # Returns the current instance of the class if there is one or a new one if there isn't
     def getInstance():
         """ Static access method. """
         if SpellingClient.__instance == None:
@@ -27,7 +28,7 @@ class SpellingClient(object):
 
         # bind the client and the server
         self.stub = pb2_grpc.SpellingBeeStub(self.channel)
-
+        
         """ SINGLETON IMPLEMENTATION"""
         """ Virtually private constructor. """
         if SpellingClient.__instance != None:
@@ -35,6 +36,8 @@ class SpellingClient(object):
         else:
             SpellingClient.__instance = self
 
+
+    # Call GRPC function to check if the entered word is correct
     def check_word(self, word, letters, score):
         """
         Client function to call the rpc for GetServerResponse
@@ -42,17 +45,15 @@ class SpellingClient(object):
         request = pb2.SpellingBeeWordRequest(word=word, letters=letters, score=score)
         return self.stub.CheckWord(request)
 
+    # Call GRPC function that gets a list of letters
     def get_letters(self):
         letter_request = pb2.LetterRequest()
         return self.stub.GetLetters(letter_request)
 
-
+    # Print letters again
     def remind_letters(self, letters):
+        print(f'MAIN LETTER {letters[0]}')
         print(f'Letters = {letters}')
-    
-    def show_menu():
-        
-        input1 = input()
 
 
 if __name__ == '__main__':
@@ -63,19 +64,15 @@ if __name__ == '__main__':
     print(f'Checking singleton implementation: SpellingClient class initialization => ', client)
     client1 = SpellingClient.getInstance()
     print(f'Checking singleton implementation: reference to previously created SpellingClient class => ', client1)
-    letters_response = client.get_letters()
-
-    print(f'Letters = {letters_response}')
-
-    # Static letters since I cannot get the ones I get from the server into an array fortmat
-    letters = ['T', 'R', 'C', 'O', 'A', 'Y', 'U']
+    letters = client.get_letters().letters
+    client.remind_letters(letters)
 
     while True:
         menu_entry_index = terminal_menu.show()
         if (menu_entry_index == 0):
-            client.remind_letters(letters_response)
+            client.remind_letters(letters)
         elif (menu_entry_index == 1):
-            word = input("Write word")
+            word = input("Write word \n")
             result = client.check_word(word=word, letters=letters, score=score)
             score = result.score
             print(f'RESULT IS => {result}')
