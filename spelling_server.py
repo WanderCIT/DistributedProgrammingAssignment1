@@ -49,11 +49,13 @@ class SpellingBeeService(pb2_grpc.SpellingBeeServicer):
 
         return pb2.SpellingLetters(letters=letters)
 
+    def GetWords(self, request, context):
+        return pb2.WordsResponse(words=request.words)
+
     # Check if word is a pangram (to my understanding)
     def is_panagram(self, word, letters):
 
         for letter in letters:
-            print(f'Letter => ', letter.lower())
             if (letter.lower() not in word):
                 return False
         
@@ -66,6 +68,8 @@ class SpellingBeeService(pb2_grpc.SpellingBeeServicer):
         word = request.word.lower()
         letters = request.letters
         score = request.score
+        words = request.words
+
         exists = False
         points = 0
 
@@ -85,7 +89,8 @@ class SpellingBeeService(pb2_grpc.SpellingBeeServicer):
                         'word': word,
                         'valid': "Invalid word",
                         'reason': "Used invalid letters",
-                        'score': score
+                        'score': score,
+                        'words': words
                     }
                     return pb2.SpellingBeeWordResponse(**result)
             if (len(word) < 5):
@@ -96,12 +101,14 @@ class SpellingBeeService(pb2_grpc.SpellingBeeServicer):
                 points = len(word)
 
             is_panagram = self.is_panagram(word.lower(), letters)
-
+            
+            words.append(word)
             result = {
                 'word': word,
                 'valid': "Valid word",
                 'reason': "Respects all rules",
-                'score':score+points
+                'score':score+points,
+                'words': words
             }
             return pb2.SpellingBeeWordResponse(**result)
         else:
@@ -109,7 +116,8 @@ class SpellingBeeService(pb2_grpc.SpellingBeeServicer):
                 'word': word,
                 'valid': "Invalid word",
                 'reason': "Word too short or didn't use centre letter",
-                'score': score
+                'score': score,
+                'words': words
             }
             return pb2.SpellingBeeWordResponse(**result)
 

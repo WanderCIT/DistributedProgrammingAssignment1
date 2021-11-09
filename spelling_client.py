@@ -38,11 +38,11 @@ class SpellingClient(object):
 
 
     # Call GRPC function to check if the entered word is correct
-    def check_word(self, word, letters, score):
+    def check_word(self, word, letters, score, words):
         """
         Client function to call the rpc for GetServerResponse
         """
-        request = pb2.SpellingBeeWordRequest(word=word, letters=letters, score=score)
+        request = pb2.SpellingBeeWordRequest(word=word, letters=letters, score=score, words=words)
         return self.stub.CheckWord(request)
 
     # Call GRPC function that gets a list of letters
@@ -55,10 +55,17 @@ class SpellingClient(object):
         print(f'MAIN LETTER {letters[0]}')
         print(f'Letters = {letters}')
 
+    # Get list of valid words
+    def get_words(self, words):
+        print(f"Entered Valid Words: {words}")
+        request = pb2.WordsRequest(words=words)
+        return self.stub.GetWords(request).words
+
 
 if __name__ == '__main__':
     score = 0
-    options = ["Remind Letters", "Submit Word", "Exit!"]
+    words = []
+    options = ["Remind Letters", "Submit Word", "Get Words", "Exit!"]
     terminal_menu = TerminalMenu(options)
     client = SpellingClient()
     print(f'Checking singleton implementation: SpellingClient class initialization => ', client)
@@ -73,9 +80,16 @@ if __name__ == '__main__':
             client.remind_letters(letters)
         elif (menu_entry_index == 1):
             word = input("Write word \n")
-            result = client.check_word(word=word, letters=letters, score=score)
+            result = client.check_word(word=word, letters=letters, score=score, words=words)
             score = result.score
-            print(f'RESULT IS => {result}')
+            words = result.words
+            print(f"Entered word: {result.word} \n")
+            print(f"Is it valid?: {result.valid} \n")
+            print(f"Reason: {result.reason} \n")
+            print(f"Score: {result.score} \n")
+            print(f"Valid words so far: {result.words} \n")
+        elif (menu_entry_index == 2):
+            words = client.get_words(words)
         else:
             break
     

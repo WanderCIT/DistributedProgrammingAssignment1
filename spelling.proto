@@ -8,6 +8,7 @@ service SpellingBee{
   // Obtains the SpellingBeeWordResponse at a given position.
   rpc GetLetters(LetterRequest) returns (SpellingLetters) {}
   rpc CheckWord(SpellingBeeWordRequest) returns (SpellingBeeWordResponse) {}
+  rpc GetWords(WordsRequest) returns (WordsResponse) {}
 
 }
 
@@ -15,6 +16,7 @@ message SpellingBeeWordRequest{
     string word = 1;
     repeated string letters = 2;
     int32 score = 3;
+    repeated string words = 4;
 }
 
 message SpellingBeeWordResponse{
@@ -22,6 +24,7 @@ message SpellingBeeWordResponse{
     string valid = 2;
     string reason = 3;
     int32 score = 4;
+    repeated string words = 5;
 }
 
 message LetterRequest{
@@ -30,4 +33,12 @@ message LetterRequest{
 
 message SpellingLetters{
     repeated string letters = 1;
+}
+
+message WordsRequest{
+    repeated string words =1;
+}
+
+message WordsResponse{
+    repeated string words =1;
 }

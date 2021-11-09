@@ -24,6 +24,11 @@ class SpellingBeeStub(object):
                 request_serializer=spelling__pb2.SpellingBeeWordRequest.SerializeToString,
                 response_deserializer=spelling__pb2.SpellingBeeWordResponse.FromString,
                 )
+        self.GetWords = channel.unary_unary(
+                '/unary.SpellingBee/GetWords',
+                request_serializer=spelling__pb2.WordsRequest.SerializeToString,
+                response_deserializer=spelling__pb2.WordsResponse.FromString,
+                )
 
 
 class SpellingBeeServicer(object):
@@ -44,6 +49,12 @@ class SpellingBeeServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetWords(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SpellingBeeServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -56,6 +67,11 @@ def add_SpellingBeeServicer_to_server(servicer, server):
                     servicer.CheckWord,
                     request_deserializer=spelling__pb2.SpellingBeeWordRequest.FromString,
                     response_serializer=spelling__pb2.SpellingBeeWordResponse.SerializeToString,
+            ),
+            'GetWords': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetWords,
+                    request_deserializer=spelling__pb2.WordsRequest.FromString,
+                    response_serializer=spelling__pb2.WordsResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -98,5 +114,22 @@ class SpellingBee(object):
         return grpc.experimental.unary_unary(request, target, '/unary.SpellingBee/CheckWord',
             spelling__pb2.SpellingBeeWordRequest.SerializeToString,
             spelling__pb2.SpellingBeeWordResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetWords(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/unary.SpellingBee/GetWords',
+            spelling__pb2.WordsRequest.SerializeToString,
+            spelling__pb2.WordsResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
